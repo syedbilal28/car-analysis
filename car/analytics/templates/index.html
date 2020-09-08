@@ -48,16 +48,10 @@
 
         }
     </style>
-    <script>
+   <script>
         document.addEventListener('DOMContentLoaded',() =>{
-             const chatSocket = new WebSocket('ws://'+ window.location.host
-            + '/'
-            );
-            document.getElementById("make_search").onclick=() =>{
-                data=document.getElementById("searchinput").value;
-                chatSocket.send(JSON.stringify({'message':data}));
-                document.getElementById("searchinput").value='';
-            };
+             document.querySelector("#image1").src="{{Views_Image}}";
+             document.querySelector("#image2").src="{{Days_Image}}";
         });
     </script>
 
@@ -67,7 +61,8 @@
         <nav class="navbar navbar-dark bg-dark">
             <!-- Navbar content -->
             <h3 style="color:white;">DashBoard</h3>
-            <form class="form-inline">
+            <form class="form-inline" action="{% url 'search' %}" method="POST">
+                {% csrf_token %}
                 <input id="searchinput" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="Container">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="make_search">Search</button>
             </form>
@@ -87,11 +82,11 @@
 
             <div id="bottom-left">
                 <h3>Views Per Day</h3>
-                <img src="{{Views_Image}}">
+                <img id="image1">
             </div>
             <div id ="bottom-right">
                 <h3>Days Online</h3>
-                <img src="{{Days_Image}}">
+                <img id ="image2">
             </div>
         </div>
 

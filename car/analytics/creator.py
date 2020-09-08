@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 import pandas as pd
 import matplotlib.pyplot as plt
+from django.conf import settings
+import os
 def Create_df():
     engine=create_engine("sqlite:///"+"C:/Users/Bilal/PycharmProjects/car-analysis/car/db.sqlite3")
     df= pd.read_sql_query(sql="SELECT * from Car",con=engine)
@@ -31,10 +33,11 @@ def Plot(df,constraints):
     plt.xlabel('Time')
     plt.ylabel('Days Online')
     plt.title("{} {} {}".format(constraints[0], constraints[1], constraints[2]))
-    plt.savefig("C:/users/bilal/pycharmprojects/car-analysis/car/analytics/images/Days Online.jpg")
+    path = settings.MEDIA_ROOT + "/"
+    plt.savefig(path+"Days Online.jpg")
 def Plot_Views(df,constraints):
     main = pd.DataFrame(df.loc[(df['Make'] == constraints[0]) & (df['Model'] == constraints[1]) & (df['Year'] == constraints[2])])
-    columns=[col for col in df if col.startswith("Views")]
+    columns=[col for col in df if col.startswith("Views Per Day")]
     main = main[columns]
     main = main.iloc[0]
     l = len(main)
@@ -43,5 +46,6 @@ def Plot_Views(df,constraints):
     plt.xlabel('Time')
     plt.ylabel('Views Per Day')
     plt.title("{} {} {}".format(constraints[0], constraints[1], constraints[2]))
-    plt.savefig("C:/users/bilal/pycharmprojects/car-analysis/car/analytics/images/Views Per Day.jpg")
-Plot(Create_df_Days(),["Nissan","NV300","2020"])
+    path = settings.MEDIA_ROOT+"/"
+
+    plt.savefig(path+"Views Per Day.jpg")
