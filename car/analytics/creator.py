@@ -18,7 +18,7 @@ def Create_df_Days():
     engine = create_engine("sqlite:///" + "C:/Users/Bilal/PycharmProjects/car-analysis/car/db.sqlite3")
     df = pd.read_sql_query(sql="SELECT * from Car_Days", con=engine)
     lst1 = ['Model', 'Make', 'Year']
-    lst3 = [col for col in df if col.startswith("Days")]
+    lst3 = list(df.filter(like="Days").columns)
     columns = lst1 + lst3
     clean_df=df[columns]
     return clean_df

@@ -9,5 +9,6 @@ class SearchConnector(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-
+        names=list(text_data_json.keys())[0]
+        file=text_data_json['csv_file']
+        
