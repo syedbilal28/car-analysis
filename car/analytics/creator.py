@@ -5,7 +5,7 @@ from django.conf import settings
 import os
 def Create_df():
     engine=create_engine("sqlite:///"+"C:/Users/Bilal/PycharmProjects/car-analysis/car/db.sqlite3")
-    df= pd.read_sql_query(sql="SELECT * from Car",con=engine)
+    df= pd.read_sql_query(sql="SELECT * from Cars",con=engine)
     lst1=['Model','Make','Year']
     lst2=[col for col in df if col.startswith('Views')]
     lst3=[col for col in df if col.startswith("Days")]
@@ -13,6 +13,7 @@ def Create_df():
     print(df.columns)
     print(columns)
     clean_df=df[columns]
+    clean_df["Year"]=clean_df["Year"].astype(int).astype(str)
     return clean_df
 def Create_df_Days():
     engine = create_engine("sqlite:///" + "C:/Users/Bilal/PycharmProjects/car-analysis/car/db.sqlite3")
@@ -21,6 +22,7 @@ def Create_df_Days():
     lst3 = list(df.filter(like="Days").columns)
     columns = lst1 + lst3
     clean_df=df[columns]
+    clean_df["Year"]=clean_df["Year"].astype(int).astype(str)
     return clean_df
 def Plot(df,constraints):
     main = pd.DataFrame(df.loc[(df['Make'] == constraints[0]) & (df['Model'] == constraints[1]) & (df['Year'] == constraints[2])])

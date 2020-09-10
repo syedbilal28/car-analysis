@@ -14,15 +14,19 @@ from . import test_pd
 # Create your views here.
 def index(request):
     df=creator.Create_df()
-    table_1=pd.DataFrame(df["Make"]+[' ']+df["Model"]+[' ']+str(df["Year"]))
+    table_1=pd.DataFrame(df[["Make","Model","Year"]])
+    table_1["car"]=table_1["Make"]+[" "]+table_1["Model"]+[" "]+table_1["Year"]
     table_1["Views"]=df["Views"]
+    table_1=table_1.drop(['Make','Model','Year'],axis=1)
     table_1=table_1.sort_values(by=['Views'],ascending=False)
     table_1=str(table_1.to_html(justify="center",index=False,header=False))
     infile=open("analytics/templates/table_views.html",'w')
     infile.write(table_1)
     infile.close()
     df1=creator.Create_df_Days()
-    table_2 = pd.DataFrame(df1["Make"] +[" "]+ df1["Model"]+[' ']+str(df1["Year"]))
+    table_2 = pd.DataFrame(df1[["Make","Model","Year"]])
+    table_2["car"]=table_2["Make"]+[" "]+table_2["Model"]+[" "]+table_2["Year"]
+    table_2=table_2.drop(['Make','Model','Year'],axis=1)
     table_2["Average Days Online"]=df1["Average Days Online"] 
     table_2=table_2.sort_values(by=["Average Days Online"],ascending=True)
     table_2=str(table_2.to_html(justify="center",index=False,header=False))
