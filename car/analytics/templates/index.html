@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Dashboard</title>
+    <style>
+        table{
+
+            margin-left:8rem;
+        }
+        h3{
+            text-align: center;
+            padding:10px;
+        }
+        table ,tr td{
+            border:1px solid #bfbfbf;
+        }
+        tbody {
+            display:block;
+            height:15rem;
+            overflow:auto;
+        }
+
+        thead, tbody tr {
+            display:table;
+            width:100%;
+
+            table-layout:fixed;/* even columns width , fix width of table too*/
+        }
+        thead {
+            width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+        }
+        table {
+            width:28rem;
+            margin-left:5rem;
+        }
+        .row{
+            padding-top:2.5rem;
+            padding-bottom:1rem;
+            margin:0;
+        }
+        img{
+            height:25rem;
+            width:37rem;
+
+        }
+    </style>
+   <script>
+        document.addEventListener('DOMContentLoaded',() =>{
+             document.querySelector("#image1").src="{{Views_Image}}";
+             document.querySelector("#image2").src="{{Days_Image}}";
+        });
+    </script>
+
+</head>
+<body>
+    <div id = "container">
+        <nav class="navbar navbar-dark bg-dark">
+            <!-- Navbar content -->
+            <h3 style="color:white;">DashBoard</h3>
+            <form class="form-inline" action="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <input id="searchinput" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="Container">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="make_search">Search</button>
+            </form>
+        </nav>
+        <div class="row">
+            <div id ="top-left" class="col-md-6">
+                <h3>Views</h3>
+               {% include "table_views.html" %}
+            </div>
+            <div id="top-right" class="col-md-6">
+                <h3>Days Online</h3>
+               {% include "table_days.html" %}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+
+            <div id="bottom-left">
+                <h3>Views Per Day</h3>
+                <img id="image1">
+            </div>
+            <div id ="bottom-right">
+                <h3>Days Online</h3>
+                <img id ="image2">
+            </div>
+        </div>
+
+
+
+</body>
+</html>
