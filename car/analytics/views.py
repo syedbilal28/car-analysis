@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import pathlib
 from . import test_pd
+from django.core.cache import cache
 # Create your views here.
 def index(request):
     df=creator.Create_df()
@@ -40,21 +41,26 @@ def index(request):
     context={'Views_Image':Views_image,'Days_Image':Days_image}
     return render(request,'index.html',context)
 def search(request):
-    constraints=request.POST['Container']
-    print(constraints)
-    print(request.session.keys())
+    try:
+        cache.clear()
+        constraints=request.POST['Container']
+        print("Here",str(request.POST.get('Container')))
+        print(constraints)
+        print(request.session.keys())
 
-    constraints=constraints.split(" ")
-    df=creator.Create_df_Days()
-    creator.Plot(df,constraints)
-    df_1=creator.Create_df()
-    creator.Plot_Views(df_1,constraints)
-    path = settings.MEDIA_ROOT
-    img_list = os.listdir(path + "/")
-    Days_image = "http://127.0.0.1:8000/media/" + img_list[0]
-    Views_image = "http://127.0.0.1:8000/media/" + img_list[1]
-    context = {'Views_Image': Views_image, 'Days_Image': Days_image}
-    return render(request,'index.html',context)
+        constraints=constraints.split(" ")
+        df=creator.Create_df_Days()
+        creator.Plot(df,constraints)
+        df_1=creator.Create_df()
+        creator.Plot_Views(df_1,constraints)
+        path = settings.MEDIA_ROOT
+        img_list = os.listdir(path + "/")
+        Days_image = "http://127.0.0.1:8000/media/" + img_list[0]
+        Views_image = "http://127.0.0.1:8000/media/" + img_list[1]
+        context = {'Views_Image': Views_image, 'Days_Image': Days_image}
+        return render(request,'index.html',context)
+    except:
+        return render(request,'error.html')
 @csrf_exempt
 def csv(request):
     #file =request.POST['file']

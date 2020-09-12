@@ -13,7 +13,7 @@ def set_Views():
     clean_df=df.dropna()
     df= pd.read_sql_query(sql="SELECT * from Car",con=engine)
     df=df.drop('index',axis=1)
-    l=len(df.keys())-5
+    l=len(df.keys())-4
     for index,row in clean_df.iterrows():
         
         row["Days Online"]=row["Days Online"].strip()

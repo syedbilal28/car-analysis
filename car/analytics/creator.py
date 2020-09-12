@@ -8,8 +8,8 @@ def Create_df():
     df= pd.read_sql_query(sql="SELECT * from Cars",con=engine)
     lst1=['Model','Make','Year']
     lst2=[col for col in df if col.startswith('Views')]
-    lst3=[col for col in df if col.startswith("Days")]
-    columns=lst1+lst2+lst3
+    #lst3=[col for col in df if col.startswith("Days")]
+    columns=lst1+lst2
     print(df.columns)
     print(columns)
     clean_df=df[columns]
@@ -36,7 +36,11 @@ def Plot(df,constraints):
     plt.ylabel('Days Online')
     plt.title("{} {} {}".format(constraints[0], constraints[1], constraints[2]))
     path = settings.MEDIA_ROOT + "/"
-    plt.savefig(path+"Days Online.jpg")
+    filelist = [ f for f in os.listdir(path)]
+    for f in filelist:
+        os.remove(os.path.join(path, f))
+    #os.remove(path+"Days Online {} {} {}.jpg".format(constraints[0], constraints[1], constraints[2])))
+    plt.savefig(path+"Days Online {} {} {}.jpg".format(constraints[0], constraints[1], constraints[2]))
 def Plot_Views(df,constraints):
     main = pd.DataFrame(df.loc[(df['Make'] == constraints[0]) & (df['Model'] == constraints[1]) & (df['Year'] == constraints[2])])
     columns=[col for col in df if col.startswith("Views Per Day")]
@@ -49,5 +53,6 @@ def Plot_Views(df,constraints):
     plt.ylabel('Views Per Day')
     plt.title("{} {} {}".format(constraints[0], constraints[1], constraints[2]))
     path = settings.MEDIA_ROOT+"/"
-
-    plt.savefig(path+"Views Per Day.jpg")
+    #os.remove(path+"Views Per Day.jpg")
+    
+    plt.savefig(path+"Views Per Day {} {} {}.jpg".format(constraints[0], constraints[1], constraints[2]))
